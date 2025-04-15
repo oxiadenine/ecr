@@ -1,0 +1,21 @@
+.logo {
+  display: flex;
+}
+
+.logo > a {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  column-gap: 8px;
+}
+
+.logo > a > img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.logo > a > h3 {
+  font-family: var(--font-monoton);
+  color: var(--color-text-accent);
+  text-transform: uppercase;
+}

@@ -1,4 +1,3 @@
-import fs from "node:fs/promises";
 import path from "node:path";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { mdxFromMarkdown } from "mdast-util-mdx";
@@ -6,11 +5,12 @@ import { frontmatterFromMarkdown } from "mdast-util-frontmatter";
 import { frontmatter } from "micromark-extension-frontmatter";
 import { toHast } from "mdast-util-to-hast";
 import { select, selectAll } from "hast-util-select";
+import walkFiles from "@/lib/walk-files";
 
 const directoryPath = `${process.cwd()}/data/knowledge`;
 
 export async function getKnowledge() {
-  return await Promise.all((await walkKnowledgeFiles(directoryPath))
+  return await Promise.all((await walkFiles(directoryPath))
     .filter(file => file.ext == ".mdx")
     .map(async file => {
       const relativeFilePath = path.join(
@@ -19,13 +19,15 @@ export async function getKnowledge() {
       ).substring(1);
       
       const knowledge = await import(`@/knowledge/${relativeFilePath}`);
+      
       knowledge.frontmatter.subject = file.name;
       
       const knowledgeContent = toHast(fromMarkdown(
         await Bun.file(path.join(file.dir, file.base)).bytes(), {
           extensions: [frontmatter()],
           mdastExtensions: [mdxFromMarkdown(), frontmatterFromMarkdown()]
-        }));
+        }
+      ));
 
       knowledge.frontmatter.title = select("h1", knowledgeContent).children[0].value;
       knowledge.frontmatter.summary = select("p", knowledgeContent).children[0].value;
@@ -50,17 +52,4 @@ export async function getKnowledgeBy(subjectTerm) {
 
 export async function getKnowledgeOf(subject) {
   return (await getKnowledge()).find(({ data }) => data.subject == subject);
-}
-
-async function walkKnowledgeFiles(dirPath) {
-  const filePaths = await Promise.all((await fs.readdir(dirPath))
-    .map(async filename => {
-      const filePath = path.join(dirPath, filename);
-      const fileStat = await Bun.file(filePath).stat();
-
-      if (fileStat.isDirectory()) return walkKnowledgeFiles(filePath);
-      else if (fileStat.isFile()) return path.parse(filePath);
-    }));
-    
-    return filePaths.reduce((all, dirFilePath) => all.concat(dirFilePath), []);
 }

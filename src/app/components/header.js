@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { monoton } from "@/app/fonts";
 import Input from "@/lib/components/input";
 import Button from "@/lib/components/button";
 import Icon from "@/lib/components/icon";
+import Logo from "@/app/components/logo";
 import styles from "@/app/components/header.module.css";
 
 export default function Header() {
@@ -36,10 +36,12 @@ export default function Header() {
   return (
     <header>
       <div className={styles["header"]}>
-        <Link href="/">
-          <img src="/images/ecr-logo.png" alt="logo" />
-          <h3 className={monoton.variable}>El Chanchito Rey</h3>
-        </Link>
+        <Logo />
+        {pathname == "/" && (
+          <div>
+            <Link href="/projects">Proyectos</Link>
+          </div>
+        )}
         {pathname == "/" && (
           <Input
             placeholder="Buscar..."

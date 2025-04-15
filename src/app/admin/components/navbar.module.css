@@ -8,37 +8,18 @@
 
 @media (min-width: 768px) {
   .navbar {
-    justify-content: normal;
     align-items: normal;
   }
 }
 
-.navbar > a {
-  display: inline-flex;
-  align-items: center;
-  align-self: center;
-  column-gap: 8px;
-}
-
-.navbar > a > img {
-  width: 2rem;
-  height: 2rem;
-}
-
-.navbar > a > h3 {
-  font-family: var(--font-monoton);
-  color: var(--color-text-accent);
-  text-transform: uppercase;
-}
-
-.navbar > div {
+.navbar > div:not(:first-child) {
   display: flex;
   flex-direction: column;
   row-gap: 8px;
 }
 
 @media (min-width: 768px) {
-  .navbar > div {
+  .navbar > div:not(:first-child) {
     flex: 1;
   }
 }

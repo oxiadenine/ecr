@@ -1,0 +1,78 @@
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.page > span {
+  background: var(--color-primary);
+  height: 64px;
+}
+
+.page > div {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+}
+
+@media (min-width: 768px) {
+  .page > div {
+    padding: 32px calc(4% + 32px);
+  }
+}
+
+.page h1, .page h2 {
+  margin: 16px 0;
+}
+
+.page h1 {
+  margin-top: 0;
+}
+
+.page h3 {
+  margin: 14px 0;
+  font-size: 1.25rem;
+}
+
+.page p {
+  margin: 12px 0;
+  line-height: 1.5rem;
+}
+
+.page P > a {
+  color: var(--color-text-accent);
+}
+
+.page p > code {
+  padding: 4px 8px;
+  background: var(--color-primary);
+  font-size: 0.875rem;
+  text-wrap-mode: wrap;
+  white-space-collapse: break-spaces;
+}
+
+.page p:has(> img) {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.page p > img {
+  max-width: 80%;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .page p > img {
+    max-width: 50%;
+  }
+
+  .page p:nth-of-type(2) > img {
+    max-width: 80%;
+  }
+}
+
+main:has(.page) {
+  margin: 0;
+  background: var(--color-secondary);
+  opacity: 0.8;
+}
