@@ -7,13 +7,13 @@ import styles from "@/app/admin/page.module.css";
 async function verifyAuth() {
   const cookiesStore = await cookies();
 
-  if (!cookiesStore.has("sessionId")) {
-    await Session.revoke(null);
+  if (!cookiesStore.has("session")) {
+    await Session.revoke();
   
     redirect("/admin/login");
   }
   
-  const sessionId = cookiesStore.get("sessionId").value;
+  const sessionId = cookiesStore.get("session").value;
   
   const isValid = await Session.verify(sessionId, Bun.env.SESSION_KEY);
   

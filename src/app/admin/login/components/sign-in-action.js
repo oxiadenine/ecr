@@ -28,10 +28,11 @@ export default async function signIn(_, formData) {
 
   const cookiesStore = await cookies();
    
-  cookiesStore.set("sessionId", session.id, {
+  cookiesStore.set("session", session.id, {
     httpOnly: true,
     secure: true,
-    expires: new Date(Date.now() + parseInt(Bun.env.SESSION_TIME)),
+    maxAge: session.time,
+    expires: new Date(session.expiresAt),
     sameSite: "strict",
     path: "/admin"
   });

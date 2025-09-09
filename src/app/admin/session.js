@@ -21,6 +21,8 @@ export default class Session {
     const session = {
       id: encryptedSessionId.toHex(),
       iv: iv.toHex(),
+      time: parseInt(Bun.env.SESSION_TIME),
+      expiresAt: new Date(Date.now() + parseInt(Bun.env.SESSION_TIME) * 1000).toISOString(),
       authTag: authTag.toHex()
     };
   
@@ -33,6 +35,8 @@ export default class Session {
     const encryptedSession = await AuthDatabase.sessions.read(encryptedSessionId);
   
     if (!encryptedSession) return false;
+
+    if (new Date(encryptedSession.expiresAt) < new Date(Date.now())) return false;
   
     const hash = SessionKey.extractData(key).hash;
   

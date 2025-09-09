@@ -11,7 +11,8 @@ export default async function signOut(_) {
 
   await Session.revoke(sessionId);
 
-  cookiesStore.set("sessionId", "", {
+  cookiesStore.set("session", "", {
+    maxAge: 0,
     expires: new Date(0),
     path: "/admin"
   });

@@ -13,6 +13,8 @@ export default class AuthDatabase {
       await transaction`
         CREATE TABLE IF NOT EXISTS sessions (
           id TEXT NOT NULL PRIMARY KEY, 
+          time INTEGER NOT NULL, 
+          expiresAt TEXT NOT NULL, 
           iv TEXT NOT NULL, 
           authTag TEXT NOT NULL
         )
