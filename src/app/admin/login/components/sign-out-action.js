@@ -9,7 +9,7 @@ export default async function signOut(_) {
 
   const sessionId = cookiesStore.get("sessionId")?.value;
 
-  Session.revoke(sessionId);
+  await Session.revoke(sessionId);
 
   cookiesStore.set("sessionId", "", {
     expires: new Date(0),

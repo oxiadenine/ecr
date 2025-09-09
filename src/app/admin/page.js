@@ -8,14 +8,14 @@ async function verifyAuth() {
   const cookiesStore = await cookies();
 
   if (!cookiesStore.has("sessionId")) {
-    Session.revoke(null);
+    await Session.revoke(null);
   
     redirect("/admin/login");
   }
   
   const sessionId = cookiesStore.get("sessionId").value;
   
-  const isValid = Session.verify(sessionId, Bun.env.SESSION_KEY);
+  const isValid = await Session.verify(sessionId, Bun.env.SESSION_KEY);
   
   if (!isValid) redirect("/admin/login");
 }

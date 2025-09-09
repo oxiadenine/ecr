@@ -24,7 +24,7 @@ export default async function signIn(_, formData) {
     };
   }
 
-  const session = Session.new(Bun.env.SESSION_KEY);
+  const session = await Session.new(Bun.env.SESSION_KEY);
 
   const cookiesStore = await cookies();
    

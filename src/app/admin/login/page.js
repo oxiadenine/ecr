@@ -10,7 +10,7 @@ async function verifyAuth() {
   if (cookiesStore.has("sessionId")) {
     const sessionId = cookiesStore.get("sessionId").value;
     
-    const isValid = Session.verify(sessionId, Bun.env.SESSION_KEY);
+    const isValid = await Session.verify(sessionId, Bun.env.SESSION_KEY);
         
     if (isValid) redirect("/admin");
   }

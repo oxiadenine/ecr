@@ -4,10 +4,10 @@ import AnalyticsDatabase from "@/data/analytics-db";
 
 export async function getPageViewsByDate() {
   const pageViewsMap = new Map([
-    [["hour", "Hace un día"], AnalyticsDatabase.pageViews.readByDate(1)],
-    [["weekday", "Hace una semana"], AnalyticsDatabase.pageViews.readByDate(7)],
-    [["day", "Hace un mes"], AnalyticsDatabase.pageViews.readByDate(30)],
-    [["month", "Hace un año"], AnalyticsDatabase.pageViews.readByDate(365)]
+    [["hour", "Hace un día"], await AnalyticsDatabase.pageViews.readByDate(1)],
+    [["weekday", "Hace una semana"], await AnalyticsDatabase.pageViews.readByDate(7)],
+    [["day", "Hace un mes"], await AnalyticsDatabase.pageViews.readByDate(30)],
+    [["month", "Hace un año"], await AnalyticsDatabase.pageViews.readByDate(365)]
   ]);
 
   const data = new Map();

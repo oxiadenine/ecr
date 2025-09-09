@@ -4,11 +4,11 @@ import AnalyticsDatabase from "@/data/analytics-db";
 
 export async function getPerformanceMetricsByRating() {
   const performanceMetricsMap = new Map([
-    ["Tiempo hasta el primer byte", AnalyticsDatabase.performanceMetrics.readByRating("TTFB")],
-    ["Primer procesamiento de imagen con contenido", AnalyticsDatabase.performanceMetrics.readByRating("FCP")],
-    ["Procesamiento de imagen con contenido más grande", AnalyticsDatabase.performanceMetrics.readByRating("LCP")],
-    ["Cambio de diseño acumulado", AnalyticsDatabase.performanceMetrics.readByRating("CLS")],
-    ["Interacción a la siguiente pintura", AnalyticsDatabase.performanceMetrics.readByRating("INP")]
+    ["Tiempo hasta el primer byte", await AnalyticsDatabase.performanceMetrics.readByRating("TTFB")],
+    ["Primer procesamiento de imagen con contenido", await AnalyticsDatabase.performanceMetrics.readByRating("FCP")],
+    ["Procesamiento de imagen con contenido más grande", await AnalyticsDatabase.performanceMetrics.readByRating("LCP")],
+    ["Cambio de diseño acumulado", await AnalyticsDatabase.performanceMetrics.readByRating("CLS")],
+    ["Interacción a la siguiente pintura", await AnalyticsDatabase.performanceMetrics.readByRating("INP")]
   ]);
 
   const labels = new Map([

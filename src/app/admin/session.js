@@ -3,7 +3,7 @@ import AuthDatabase from "@/data/auth-db";
 import SessionKey from "@/lib/admin/session-key";
 
 export default class Session {
-  static new(key) {
+  static async new(key) {
     const sessionId = randomBytes(16).toHex();
     
     const hash = SessionKey.extractData(key).hash;
@@ -24,13 +24,13 @@ export default class Session {
       authTag: authTag.toHex()
     };
   
-    AuthDatabase.sessions.create(session);
+    await AuthDatabase.sessions.create(session);
   
     return session;
   }
 
-  static verify(encryptedSessionId, key) {
-    const encryptedSession = AuthDatabase.sessions.read(encryptedSessionId);
+  static async verify(encryptedSessionId, key) {
+    const encryptedSession = await AuthDatabase.sessions.read(encryptedSessionId);
   
     if (!encryptedSession) return false;
   
@@ -55,7 +55,7 @@ export default class Session {
     return true;
   }
 
-  static revoke(encryptedSessionId) {
-    AuthDatabase.sessions.delete(encryptedSessionId);
+  static async revoke(encryptedSessionId) {
+    await AuthDatabase.sessions.delete(encryptedSessionId);
   }
 }

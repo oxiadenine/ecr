@@ -1,34 +1,38 @@
-import { Database } from "bun:sqlite";
+import { SQL, sql } from "bun";
 
 export default class AuthDatabase {
-  static database = new Database(
-    `${process.cwd()}/data/db/auth.sqlite`, 
-    { create: true, strict: true }
-  );
+  static client = new SQL({
+    adapter: "sqlite",
+    filename: `${process.cwd()}/data/db/auth.sqlite`,
+    create: true,
+    strict: true
+  });
 
   static {
-    this.database.run("CREATE TABLE IF NOT EXISTS sessions (id TEXT NOT NULL PRIMARY KEY, iv TEXT NOT NULL, authTag TEXT NOT NULL)");
+    this.client.begin(async transaction => {
+      await transaction`
+        CREATE TABLE IF NOT EXISTS sessions (
+          id TEXT NOT NULL PRIMARY KEY, 
+          iv TEXT NOT NULL, 
+          authTag TEXT NOT NULL
+        )
+      `;
+    });
   }
 
   static sessions = class Sessions {
-    static create(session) {
-      const query = AuthDatabase.database.query("INSERT INTO sessions (id, iv, authTag) VALUES ($id, $iv, $authTag)");
-      
-      query.run(session);
-      query.finalize();
+    static async create(session) {
+      await AuthDatabase.client`INSERT INTO sessions ${sql(session)}`;
     }
   
-    static read(id) {
-      const query = AuthDatabase.database.query("SELECT * FROM sessions WHERE id = $id");
-      
-      return query.get({ id });
+    static async read(id) {
+      const result = await AuthDatabase.client`SELECT * FROM sessions WHERE id = ${id}`;
+
+      return result[0];
     }
   
-    static delete(id) {
-      const query = AuthDatabase.database.query(`DELETE FROM sessions${id ? " WHERE id = $id" : ""}`);
-    
-      query.run({ id });
-      query.finalize();
+    static async delete(id) {
+      await AuthDatabase.client`DELETE FROM sessions ${id ? sql`WHERE id = ${id}` : sql``}`;
     }
   };
 }

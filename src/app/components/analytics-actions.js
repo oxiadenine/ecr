@@ -7,10 +7,10 @@ import AnalyticsDatabase from "@/data/analytics-db";
 export async function storePageViews(pageViews) {
   const clientIp = getClientIp(await headers()) ?? "";
 
-  pageViews.forEach(pageView => {
+  pageViews.forEach(async pageView => {
     const { date, ...rest } = pageView;
 
-    AnalyticsDatabase.pageViews.create({
+    await AnalyticsDatabase.pageViews.create({
       id: Bun.randomUUIDv7(),
       ip: clientIp,
       date: date.toISOString(),
@@ -20,10 +20,10 @@ export async function storePageViews(pageViews) {
 }
 
 export async function storePerformanceMetrics(performanceMetrics) {
-  performanceMetrics.forEach(performanceMetric => {
+  performanceMetrics.forEach(async performanceMetric => {
     const { id, value, delta, ...rest } = performanceMetric;
 
-    AnalyticsDatabase.performanceMetrics.create({
+    await AnalyticsDatabase.performanceMetrics.create({
       id: id.substring(id.indexOf("-") + 1),
       value: Math.round(value),
       delta: Math.round(delta),
