@@ -2,12 +2,16 @@
   display: grid;
   grid-template-columns: auto;
   grid-auto-rows: max-content;
-  gap: 32px;
+  row-gap: 32px;
 }
 
 @media (min-width: 768px) {
   .page {
     grid-template-columns: auto auto;
+  }
+
+  .page > article:nth-child(even) {
+    margin-left: 32px;
   }
 }
 
