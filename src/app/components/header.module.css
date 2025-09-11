@@ -34,29 +34,29 @@
   color: var(--color-text-accent);
 }
 
-.header > div:last-child {
+.header > div:last-child:has(> input) {
   background: var(--color-secondary);
   border: 1px solid transparent;
 }
 
 @media (min-width: 768px) {
-  .header > div:last-child {
+  .header > div:last-child:has(> input) {
     flex: 0.75;
   }
 }
 
-.header > div:last-child:focus-within {
+.header > div:last-child:has(> input):focus-within {
   border: 1px solid var(--color-text-accent);
 }
 
-.header > div:last-child > input {
+.header > div:last-child:has(> input) > input {
   caret-color: var(--color-text-accent);
 }
 
-.header > div:last-child i {
+.header > div:last-child:has(> input) i {
   color: var(--color-text-accent);
 }
 
-.header > div:last-child > button > i {
+.header > div:last-child:has(> input) > button > i {
   width: 16px;
 }
