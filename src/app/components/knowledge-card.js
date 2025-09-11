@@ -18,7 +18,9 @@ export default function KnowledgeCard({ data }) {
   };
 
   useEffect(() => {
-    if (urlCopied) setTimeout(() => setUrlCopied(false), 1000);
+    if (urlCopied) {
+      setTimeout(() => setUrlCopied(false), 1000);
+    }
   }, [urlCopied]);
 
   return (

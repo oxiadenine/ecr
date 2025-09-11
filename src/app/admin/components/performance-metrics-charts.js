@@ -22,7 +22,7 @@ export default function PageViewsCharts() {
   const [performanceMetricsByRating, setPerformanceMetricsByRating] = useState(null);
 
   useEffect(() => {
-    const getPerformanceMetrics = async () => {
+    async function getPerformanceMetrics() {
       if (!performanceMetricsByRating) {
         setPerformanceMetricsByRating(await getPerformanceMetricsByRating());
       }

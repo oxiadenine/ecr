@@ -13,7 +13,9 @@ export default function useAnalytics(onFlush) {
         const remainingAnalytics = [...prevAnalytics].filter(entry => entry[0] != key);
 
         return new Map([...remainingAnalytics, [key, new Set([...queue, data])]]);
-      } else return new Map([...prevAnalytics, [key, new Set([data])]]);
+      } else {
+        return new Map([...prevAnalytics, [key, new Set([data])]]);
+      }
     });
   }
 
@@ -27,7 +29,9 @@ export default function useAnalytics(onFlush) {
 
   useEffect(() => {
     function onVisibilityChange() {
-      if (document.visibilityState == "hidden") flushAnalytics();
+      if (document.visibilityState === "hidden") {
+        flushAnalytics();
+      }
     }
 
     window.addEventListener("visibilitychange", onVisibilityChange);

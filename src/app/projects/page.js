@@ -1,12 +1,13 @@
+import { env } from "bun";
 import { Suspense } from "react";
+import { getProjects } from "@/data/project-fetcher";
 import Header from "@/app/components/header";
 import Footer from "@/app/components/footer";
 import styles from "@/app/projects/page.module.css";
-import { getProjects } from "@/data/project-fetcher";
 
 export async function generateMetadata() {
-  const url = Bun.env.URL;
-  const siteName = Bun.env.SITE_NAME;
+  const url = env.URL;
+  const siteName = env.SITE_NAME;
   
   const title = `${siteName} | Proyectos`;
   const description = `Proyectos hechos por ${siteName}.`;
@@ -48,12 +49,14 @@ export default async function Page() {
             {projects.map((project, index) => {
               const { component: Project } = project;
 
-              return <>
-                <div key={project.data.name}>
-                  <Project />
-                </div>
-                {index < projects.length - 1 && <span key={index} />}
-              </>
+              return (
+                <>
+                  <div key={project.data.name}>
+                    <Project />
+                  </div>
+                  {index < projects.length - 1 && <span key={index} />}
+                </>
+              );
             })}
           </div>
         </main>

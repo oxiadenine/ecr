@@ -27,8 +27,11 @@ export default function Header() {
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
 
-    if (searchTerm.length > 0) params.set("s", searchTerm);
-    else params.delete("s");
+    if (searchTerm.length > 0) {
+      params.set("s", searchTerm);
+    } else {
+      params.delete("s");
+    }
 
     router.replace(`${pathname}?${params.toString()}`);
   }, [searchTerm]);
@@ -37,12 +40,12 @@ export default function Header() {
     <header>
       <div className={styles["header"]}>
         <Logo />
-        {pathname == "/" && (
+        {pathname === "/" && (
           <div>
             <Link href="/projects">Proyectos</Link>
           </div>
         )}
-        {pathname == "/" && (
+        {pathname === "/" && (
           <Input
             placeholder="Buscar..."
             onChange={onSearchInputChange}

@@ -17,7 +17,7 @@ export default function Dashboard() {
     <div className={styles["dashboard"]}>
       <Navbar menuItem={menuItem} onMenuItemClick={onMenuItemClick} />
       <section>
-        {menuItem == "page-views" && (
+        {menuItem === "page-views" && (
           <>
             <header>
               <h2>Visitas</h2>
@@ -25,7 +25,7 @@ export default function Dashboard() {
             <PageViewsCharts />
           </>
         )}
-        {menuItem == "performance-metrics" && (
+        {menuItem === "performance-metrics" && (
           <>
             <header>
               <h2>Rendimiento</h2>

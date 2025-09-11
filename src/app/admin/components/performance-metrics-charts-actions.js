@@ -24,12 +24,13 @@ export async function getPerformanceMetricsByRating() {
 
     performanceMetrics.forEach(performanceMetric => {
       const { path, rating, value } = performanceMetric;
-      const dataIndex = [...labels.keys()].findIndex(key => key == rating);
+      const dataIndex = [...labels.keys()].findIndex(key => key === rating);
     
       const dataset = datasets.get(path);
     
-      if (dataset) dataset[dataIndex] = { x: dataIndex, y: value };
-      else {
+      if (dataset) {
+        dataset[dataIndex] = { x: dataIndex, y: value };
+      } else {
         const data = [...Array(3).keys()].map(key => ({ x: key, y: 0 }));
         data[dataIndex] = { x: dataIndex, y: value };
     

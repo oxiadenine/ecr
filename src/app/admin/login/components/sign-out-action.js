@@ -2,20 +2,10 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import Session from "@/app/admin/session";
+import SessionCookie from "@/app/admin/session-cookie";
 
-export default async function signOut(_) {
-  const cookiesStore = await cookies();
-
-  const sessionId = cookiesStore.get("sessionId")?.value;
-
-  await Session.revoke(sessionId);
-
-  cookiesStore.set("session", "", {
-    maxAge: 0,
-    expires: new Date(0),
-    path: "/admin"
-  });
+export default async function signOut(data) {
+  await SessionCookie.revoke(await cookies());
 
   redirect("/admin/login");
 }

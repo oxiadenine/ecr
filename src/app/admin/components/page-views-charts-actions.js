@@ -18,12 +18,12 @@ export async function getPageViewsByDate() {
     let dataSize;
     let labels;
 
-    if (dataId == "hour") {
+    if (dataId === "hour") {
       dataSize = 24;
       labels = [...Array(dataSize).keys()].map(key =>
         key > 9 ? `${key}:00` : `0${key}:00`
       );
-    } else if (dataId == "weekday") {
+    } else if (dataId === "weekday") {
       dataSize = 7;
       labels = [...Array(dataSize).keys()].map(key => {
         const weekday = new Intl.DateTimeFormat("es", { weekday: "long" })
@@ -31,8 +31,7 @@ export async function getPageViewsByDate() {
     
         return `${weekday.charAt(0).toUpperCase()}${weekday.slice(1)}`;
       });
-    }
-    else if (dataId == "day") {
+    } else if (dataId === "day") {
       dataSize = 31;
       labels = [...Array(dataSize).keys()].map(key => {
         const day = new Intl.DateTimeFormat("es", { day: "2-digit" })
@@ -40,8 +39,7 @@ export async function getPageViewsByDate() {
     
         return `${day.charAt(0).toUpperCase()}${day.slice(1)}`;
       });
-    }
-    else if (dataId == "month") {
+    } else if (dataId === "month") {
       dataSize = 12;
       labels = [...Array(dataSize).keys()].map(key => {
         const month = new Intl.DateTimeFormat("es", { month: "long" })
@@ -56,14 +54,15 @@ export async function getPageViewsByDate() {
     pageViews.forEach(pageView => {
       const { path, views } = pageView;
 
-      const dataIndex = dataId == "hour"
+      const dataIndex = dataId === "hour"
         ? parseInt(pageView[dataId])
         : parseInt(pageView[dataId]) - 1;
   
       const dataset = datasets.get(path);
   
-      if (dataset) dataset[dataIndex] = { x: dataIndex, y: views };
-      else {
+      if (dataset) {
+        dataset[dataIndex] = { x: dataIndex, y: views };
+      } else {
         const data = [...Array(dataSize).keys()].map(key => ({ x: key, y: 0 }));
         data[dataIndex] = { x: dataIndex, y: views };
   

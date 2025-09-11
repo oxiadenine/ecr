@@ -1,31 +1,20 @@
+import { env } from "bun";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import Session from "@/app/admin/session";
+import SessionCookie from "@/app/admin/session-cookie";
 import Dashboard from "@/app/admin/components/dashboard";
 import styles from "@/app/admin/page.module.css";
-
-async function verifyAuth() {
-  const cookiesStore = await cookies();
-
-  if (!cookiesStore.has("session")) {
-    await Session.revoke();
-  
-    redirect("/admin/login");
-  }
-  
-  const sessionId = cookiesStore.get("session").value;
-  
-  const isValid = await Session.verify(sessionId, Bun.env.SESSION_KEY);
-  
-  if (!isValid) redirect("/admin/login");
-}
 
 export const metadata = {
   title: "Admin"
 };
 
 export default async function Page() {
-  await verifyAuth();
+  const isSessionValid = await SessionCookie.verify(env.SESSION_KEY, await cookies());
+
+  if (!isSessionValid) {
+    redirect("/admin/login");
+  }
 
   return (
     <>

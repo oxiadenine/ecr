@@ -1,3 +1,5 @@
+import { env } from "bun";
+
 export default function robots() {
   return {
     rules: {
@@ -5,6 +7,6 @@ export default function robots() {
       allow: "/",
       disallow: "/admin/"
     },
-    sitemap: `${Bun.env.URL}/sitemap.xml`
+    sitemap: `${env.URL}/sitemap.xml`
   };
 }

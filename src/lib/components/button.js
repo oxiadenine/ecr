@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-function Button(props) {
+export default function Button(props) {
   const { type = "button" } = props;
 
   PropTypes.checkPropTypes(Button.propTypes, props, "prop", Button.name);
@@ -35,5 +35,3 @@ Button.propTypes = {
   startIcon: PropTypes.object,
   endIcon: PropTypes.object
 };
-
-export default Button;

@@ -1,3 +1,4 @@
+import { file } from "bun";
 import path from "node:path";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { mdxFromMarkdown } from "mdast-util-mdx";
@@ -11,19 +12,19 @@ const directoryPath = `${process.cwd()}/data/knowledge`;
 
 export async function getKnowledge() {
   return await Promise.all((await walkFiles(directoryPath))
-    .filter(file => file.ext == ".mdx")
-    .map(async file => {
+    .filter(parsedPath => parsedPath.ext === ".mdx")
+    .map(async parsedPath => {
       const relativeFilePath = path.join(
-        file.dir.replace(directoryPath, "/"), 
-        file.base
+        parsedPath.dir.replace(directoryPath, "/"), 
+        parsedPath.base
       ).substring(1);
       
       const knowledge = await import(`@/knowledge/${relativeFilePath}`);
       
-      knowledge.frontmatter.subject = file.name;
+      knowledge.frontmatter.subject = parsedPath.name;
       
       const knowledgeContent = toHast(fromMarkdown(
-        await Bun.file(path.join(file.dir, file.base)).bytes(), {
+        await file(path.join(parsedPath.dir, parsedPath.base)).bytes(), {
           extensions: [frontmatter()],
           mdastExtensions: [mdxFromMarkdown(), frontmatterFromMarkdown()]
         }
@@ -46,10 +47,10 @@ export async function getKnowledgeBy(subjectTerm) {
     const titleTerm = subjectTerm.toLowerCase().replace(" ", "")
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-      return title.includes(titleTerm);
-    });
+    return title.includes(titleTerm);
+  });
 }
 
 export async function getKnowledgeOf(subject) {
-  return (await getKnowledge()).find(({ data }) => data.subject == subject);
+  return (await getKnowledge()).find(({ data }) => data.subject === subject);
 }

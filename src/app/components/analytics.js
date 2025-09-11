@@ -9,7 +9,7 @@ import { storePageViews, storePerformanceMetrics } from "@/app/components/analyt
 export default function Analytics() {
   const pathname = usePathname();
 
-  if (pathname == "/" || pathname.startsWith("/knowledge") || pathname.startsWith("/projects")) {
+  if (pathname === "/" || pathname.startsWith("/knowledge") || pathname.startsWith("/projects")) {
     const { addToQueue } = useAnalytics(async (analytics) => {
       await storePageViews(analytics.get("page-views"));
       await storePerformanceMetrics(analytics.get("performance-metrics"));

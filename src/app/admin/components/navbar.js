@@ -14,7 +14,7 @@ export default function Navbar({ menuItem, onMenuItemClick }) {
         <div>
           <h3>Analíticas</h3>
           <ul>
-            <li style={menuItem == "page-views" ? { color: "var(--color-text-accent)" } : null}>
+            <li style={menuItem === "page-views" ? { color: "var(--color-text-accent)" } : null}>
               <Button
                 name="page-views"
                 onClick={onMenuItemClick}
@@ -23,7 +23,7 @@ export default function Navbar({ menuItem, onMenuItemClick }) {
                 Visitas
               </Button>
             </li>
-            <li style={menuItem == "performance-metrics" ? { color: "var(--color-text-accent)" } : null}>
+            <li style={menuItem === "performance-metrics" ? { color: "var(--color-text-accent)" } : null}>
               <Button
                 name="performance-metrics"
                 onClick={onMenuItemClick}

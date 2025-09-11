@@ -1,3 +1,4 @@
+import { file } from "bun";
 import path from "node:path";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { mdxFromMarkdown } from "mdast-util-mdx";
@@ -11,19 +12,19 @@ const directoryPath = `${process.cwd()}/data/projects`;
 
 export async function getProjects() {
   return await Promise.all((await walkFiles(directoryPath))
-    .filter(file => file.ext == ".mdx")
-    .map(async file => {
+    .filter(parsedPath => parsedPath.ext === ".mdx")
+    .map(async parsedPath => {
       const relativeFilePath = path.join(
-        file.dir.replace(directoryPath, "/"), 
-        file.base
+        parsedPath.dir.replace(directoryPath, "/"), 
+        parsedPath.base
       ).substring(1);
       
       const project = await import(`@/projects/${relativeFilePath}`);
 
-      project.frontmatter.name = file.name;
+      project.frontmatter.name = parsedPath.name;
 
       const projectContent = toHast(fromMarkdown(
-        await Bun.file(path.join(file.dir, file.base)).bytes(), {
+        await file(path.join(parsedPath.dir, parsedPath.base)).bytes(), {
           extensions: [frontmatter()],
           mdastExtensions: [mdxFromMarkdown(), frontmatterFromMarkdown()]
         }

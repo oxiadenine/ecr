@@ -26,14 +26,16 @@ const ipHeaderKeys = [
   "xxx-real-ip"
 ];
 
-export default function getClientIp(headers) {
+export default function clientIp(headers) {
   const ipHeaders = [];
 
   for (const [key, value] of headers.entries()) {
     if (ipHeaderKeys.includes(key.toLowerCase())) {
       const ip = value.includes(",") ? value.split(",")[0] : value;
       
-      if (!ipHeaders.includes(ip)) ipHeaders.push({ key, ip });
+      if (!ipHeaders.includes(ip)) {
+        ipHeaders.push({ key, ip });
+      }
     }
   }
 
@@ -47,9 +49,13 @@ export default function getClientIp(headers) {
         return ipHeaders[index].ip;
       } else if (key.includes("forwarded")) {
         return ipHeaders[index].ip;
-      } else index += 1;
+      } else {
+        index += 1;
+      }
     }
     
     return ipHeaders[index].ip;
-  } else return ipHeaders[0]?.ip;
+  } else {
+    return ipHeaders[0]?.ip;
+  }
 }

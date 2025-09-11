@@ -1,6 +1,8 @@
+import { password } from "bun";
+
 export default class SessionKey {
-  static async generate(password) {
-    const hash = await Bun.password.hash(password, {
+  static async generate(plaintext) {
+    const hash = await password.hash(plaintext, {
       algorithm: "argon2id",
       memoryCost: 32000,
       timeCost: 8
@@ -9,10 +11,10 @@ export default class SessionKey {
     return new TextEncoder().encode(hash).toHex();
   }
 
-  static async verify(password, key) {
+  static async verify(plaintext, key) {
     const hash = new TextDecoder().decode(Uint8Array.fromHex(key));
   
-    return await Bun.password.verify(password, hash);
+    return await password.verify(plaintext, hash, "argon2id");
   }
 
   static extractData(key) {

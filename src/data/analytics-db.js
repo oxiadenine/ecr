@@ -45,7 +45,7 @@ export default class AnalyticsDatabase {
         END
       `;
 
-      if (lastDays == 1) {
+      if (lastDays === 1) {
         return await AnalyticsDatabase.client`
           SELECT ${partial} AS path, strftime('%H', date) AS hour, COUNT(*) AS views 
           FROM pageViews 
@@ -53,7 +53,7 @@ export default class AnalyticsDatabase {
           GROUP BY ${partial}, strftime('%H', date) 
           ORDER BY ${partial}, strftime('%H:%M', date)
         `;
-      } else if (lastDays == 7) {
+      } else if (lastDays === 7) {
         return await AnalyticsDatabase.client`
           SELECT ${partial} AS path, strftime('%u', date) AS weekday, COUNT(*) AS views 
           FROM pageViews 
@@ -61,7 +61,7 @@ export default class AnalyticsDatabase {
           GROUP BY ${partial}, strftime('%u', date) 
           ORDER BY ${partial}, strftime('%u', date)
         `;
-      } else if (lastDays == 30) {
+      } else if (lastDays === 30) {
         return await AnalyticsDatabase.client`
           SELECT ${partial} AS path, strftime('%d', date) AS day, COUNT(*) AS views 
           FROM pageViews 
@@ -69,7 +69,7 @@ export default class AnalyticsDatabase {
           GROUP BY ${partial}, strftime('%d', date) 
           ORDER BY ${partial}, strftime('%d', date)
         `;
-      } else if (lastDays == 365) {
+      } else if (lastDays === 365) {
         return await AnalyticsDatabase.client`
           SELECT ${partial} AS path, strftime('%m', date) AS month, COUNT(*) AS views 
           FROM pageViews 

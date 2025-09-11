@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-function Input(props) {
+export default function Input(props) {
   const { type = "text" } = props;
 
   PropTypes.checkPropTypes(Input.propTypes, props, "prop", Input.name);
@@ -40,5 +40,3 @@ Input.propTypes = {
   startIcon: PropTypes.object,
   endIcon: PropTypes.object
 };
-
-export default Input;

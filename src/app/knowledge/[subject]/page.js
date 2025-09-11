@@ -1,12 +1,13 @@
+import { env } from "bun";
 import { notFound } from "next/navigation";
+import { getKnowledgeOf } from "@/data/knowledge-fetcher";
 import Header from "@/app/components/header";
 import Footer from "@/app/components/footer";
 import styles from "@/app/knowledge/[subject]/page.module.css";
-import { getKnowledgeOf } from "@/data/knowledge-fetcher";
 
 export async function generateMetadata({ params }) {
-  const url = Bun.env.URL;
-  const siteName = Bun.env.SITE_NAME;
+  const url = env.URL;
+  const siteName = env.SITE_NAME;
 
   const subject = (await params).subject;
 

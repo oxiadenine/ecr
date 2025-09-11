@@ -1,41 +1,31 @@
 "use server";
 
+import { env } from "bun";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import Session from "@/app/admin/session";
 import SessionKey from "@/lib/admin/session-key";
+import SessionCookie from "@/app/admin/session-cookie";
 
-export default async function signIn(_, formData) {
+export default async function signIn(data, formData) {
   const password = formData.get("password");
 
-  if (password.length == 0) {
+  if (password.length === 0) {
     return { 
       password, 
-      errors: { password: "La contraseña no puede estar vacía" } 
+      errors: { password: "La contraseña está en blanco" } 
     };
   }
 
-  const isValid = await SessionKey.verify(password, Bun.env.SESSION_KEY);
+  const isPasswordValid = await SessionKey.verify(password, env.SESSION_KEY);
 
-  if (!isValid) {
+  if (!isPasswordValid) {
     return {
       password,
       errors: { password: "La contraseña no es válida" }
     };
   }
 
-  const session = await Session.new(Bun.env.SESSION_KEY);
-
-  const cookiesStore = await cookies();
-   
-  cookiesStore.set("session", session.id, {
-    httpOnly: true,
-    secure: true,
-    maxAge: session.time,
-    expires: new Date(session.expiresAt),
-    sameSite: "strict",
-    path: "/admin"
-  });
+  await SessionCookie.create(env.SESSION_KEY, await cookies());
 
   redirect("/admin");
 }

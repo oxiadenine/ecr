@@ -1,12 +1,13 @@
+import { env } from "bun";
+import { getKnowledgeBy } from "@/data/knowledge-fetcher";
 import Header from "@/app/components/header";
 import Footer from "@/app/components/footer";
 import KnowledgeCard from "@/app/components/knowledge-card";
 import styles from "@/app/page.module.css";
-import { getKnowledgeBy } from "@/data/knowledge-fetcher";
 
 export async function generateMetadata() {
-  const url = Bun.env.URL;
-  const siteName = Bun.env.SITE_NAME;
+  const url = env.URL;
+  const siteName = env.SITE_NAME;
   
   const title = siteName;
   const description = `${title} y el conocimiento.`;

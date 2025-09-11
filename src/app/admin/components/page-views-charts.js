@@ -22,8 +22,10 @@ export default function PageViewsCharts() {
   const [pageViewsByDate, setPageViewsByDate] = useState(null);
   
   useEffect(() => {
-    const getPageViews = async () => {
-      if (!pageViewsByDate) setPageViewsByDate(await getPageViewsByDate());
+    async function getPageViews() {
+      if (!pageViewsByDate) {
+        setPageViewsByDate(await getPageViewsByDate());
+      }
     };
  
     getPageViews();

@@ -1,18 +1,19 @@
 "use server";
 
+import { randomUUIDv7 } from "bun";
 import { headers } from "next/headers";
-import getClientIp from "@/lib/client-ip";
+import clientIp from "@/lib/client-ip";
 import AnalyticsDatabase from "@/data/analytics-db";
 
 export async function storePageViews(pageViews) {
-  const clientIp = getClientIp(await headers()) ?? "";
+  const ip = clientIp(await headers()) ?? "";
 
   pageViews.forEach(async pageView => {
     const { date, ...rest } = pageView;
 
     await AnalyticsDatabase.pageViews.create({
-      id: Bun.randomUUIDv7(),
-      ip: clientIp,
+      id: randomUUIDv7(),
+      ip,
       date: date.toISOString(),
       ...rest
     });
