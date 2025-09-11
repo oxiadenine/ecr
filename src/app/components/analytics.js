@@ -9,23 +9,23 @@ import { storePageViews, storePerformanceMetrics } from "@/app/components/analyt
 export default function Analytics() {
   const pathname = usePathname();
 
-  if (pathname === "/" || pathname.startsWith("/knowledge") || pathname.startsWith("/projects")) {
-    const { addToQueue } = useAnalytics(async (analytics) => {
-      await storePageViews(analytics.get("page-views"));
-      await storePerformanceMetrics(analytics.get("performance-metrics"));
-    });
+  const [addToQueue] = useAnalytics(async (analytics) => {
+    await storePageViews(analytics.get("page-views"));
+    await storePerformanceMetrics(analytics.get("performance-metrics"));
+  });
 
-    useEffect(() => {
-      function addPageView() {
-        addToQueue("page-views", { path: pathname, date: new Date() });
-      }
+  useEffect(() => {
+    function addPageView() {
+      addToQueue("page-views", { path: pathname, date: new Date() });
+    }
 
-      function addPerformanceMetric(metric) {
-        const { entries: _, ...rest } = metric;
+    function addPerformanceMetric(metric) {
+      const { entries: _, ...rest } = metric;
         
-        addToQueue("performance-metrics", { path: pathname, ...rest });
-      }
+      addToQueue("performance-metrics", { path: pathname, ...rest });
+    }
 
+    if (!pathname.startsWith("/admin")) {
       addPageView();
 
       onCLS(addPerformanceMetric);
@@ -33,6 +33,6 @@ export default function Analytics() {
       onINP(addPerformanceMetric);
       onFCP(addPerformanceMetric);
       onTTFB(addPerformanceMetric);
-    }, [pathname]);
-  }
+    }
+  }, [pathname]);
 }
