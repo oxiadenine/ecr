@@ -1,7 +1,3 @@
-@import url('/css/fa-icons.min.css');
-@import url('/css/fa-icons-solid.min.css');
-@import url('/css/fa-icons-brands.min.css');
-
 :root {
   --color-primary: rgb(40, 40, 43);
   --color-secondary: rgb(52, 52, 52);
