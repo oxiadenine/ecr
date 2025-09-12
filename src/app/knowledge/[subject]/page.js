@@ -12,12 +12,12 @@ export async function generateMetadata({ params }) {
 
   const subject = (await params).subject;
 
-  const data = (await getKnowledgeOf(subject))?.data ?? null;
+  const data = (await getKnowledgeOf(subject))?.data ?? undefined;
 
-  const title = `${siteName} | ${data.title}`;
-  const tags = data.tags?.split(",") ?? [];
+  const title = `${siteName} | ${data?.title}`;
+  const tags = data?.tags.split(",") ?? [];
 
-  return data ? {
+  return data && {
     title,
     description: data.summary,
     keywords: tags,
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }) {
       authors: [data.author],
       tags
     }
-  } : null;
+  };
 }
 
 export default async function Page({ params }) {
