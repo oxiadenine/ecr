@@ -1,5 +1,6 @@
 import { env } from "bun";
 import { getKnowledgeBy } from "@/data/knowledge-fetcher";
+import Analytics from "@/app/components/analytics";
 import Header from "@/app/components/header";
 import Footer from "@/app/components/footer";
 import KnowledgeCard from "@/app/components/knowledge-card";
@@ -30,6 +31,8 @@ export async function generateMetadata() {
 }
 
 export default async function Page(props) {
+  const isAnalyticsEnabled = !!+env.ANALYTICS_ENABLE ?? false;
+
   const searchParams = await props.searchParams;
   const searchTerm = searchParams?.s || "";
 
@@ -37,6 +40,7 @@ export default async function Page(props) {
 
   return (
     <>
+      {isAnalyticsEnabled && <Analytics />}
       <Header />
       <div>
         <main>

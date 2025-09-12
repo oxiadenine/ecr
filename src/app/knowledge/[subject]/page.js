@@ -1,6 +1,7 @@
 import { env } from "bun";
 import { notFound } from "next/navigation";
 import { getKnowledgeOf } from "@/data/knowledge-fetcher";
+import Analytics from "@/app/components/analytics";
 import Header from "@/app/components/header";
 import Footer from "@/app/components/footer";
 import styles from "@/app/knowledge/[subject]/page.module.css";
@@ -39,12 +40,15 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
+  const isAnalyticsEnabled = !!+env.ANALYTICS_ENABLE ?? false;
+
   const subject = (await params).subject;
 
   const { component: Knowledge } = await getKnowledgeOf(subject) ?? notFound();
 
   return (
     <>
+      {isAnalyticsEnabled && <Analytics />}
       <Header />
       <div>
         <main>

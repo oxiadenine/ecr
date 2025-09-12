@@ -1,6 +1,7 @@
 import { env } from "bun";
 import { Suspense } from "react";
 import { getProjects } from "@/data/project-fetcher";
+import Analytics from "@/app/components/analytics";
 import Header from "@/app/components/header";
 import Footer from "@/app/components/footer";
 import styles from "@/app/projects/page.module.css";
@@ -36,10 +37,13 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
+  const isAnalyticsEnabled = !!+env.ANALYTICS_ENABLE ?? false;
+
   const projects = await getProjects();
 
   return (
     <>
+      {isAnalyticsEnabled && <Analytics />}
       <Suspense>
         <Header />
       </Suspense>

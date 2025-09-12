@@ -25,14 +25,12 @@ export default function Analytics() {
       addToQueue("performance-metrics", { path: pathname, ...rest });
     }
 
-    if (!pathname.startsWith("/admin")) {
-      addPageView();
+    addPageView();
 
-      onCLS(addPerformanceMetric);
-      onLCP(addPerformanceMetric);
-      onINP(addPerformanceMetric);
-      onFCP(addPerformanceMetric);
-      onTTFB(addPerformanceMetric);
-    }
+    onCLS(addPerformanceMetric);
+    onLCP(addPerformanceMetric);
+    onINP(addPerformanceMetric);
+    onFCP(addPerformanceMetric);
+    onTTFB(addPerformanceMetric);
   }, [pathname]);
 }
