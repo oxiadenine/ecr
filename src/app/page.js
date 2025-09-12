@@ -3,6 +3,7 @@ import { getKnowledgeBy } from "@/data/knowledge-fetcher";
 import Header from "@/app/components/header";
 import Footer from "@/app/components/footer";
 import KnowledgeCard from "@/app/components/knowledge-card";
+import logo from "@/app/images/ecr-logo.png";
 import styles from "@/app/page.module.css";
 
 export async function generateMetadata() {
@@ -21,7 +22,7 @@ export async function generateMetadata() {
       description,
       url,
       siteName,
-      images: [{ url: `${url}/images/ecr-logo.png`, alt: "ecr logo" }],
+      images: [{ url: `${url}${logo.src}`, alt: "logo" }],
       locale: "es_ES",
       type: "website"
     }

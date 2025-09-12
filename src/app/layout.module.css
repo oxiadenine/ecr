@@ -1,7 +1,9 @@
 .layout {
   display: flex;
   min-height: 100%;
-  background: url('/images/geometry-background.png') round fixed var(--color-secondary);
+  background-attachment: fixed;
+  background-color: var(--color-secondary);
+  background-repeat: round;
   background-blend-mode: luminosity;
 }
 

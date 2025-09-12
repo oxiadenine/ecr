@@ -19,8 +19,8 @@
 
 .error > a > img {
   margin: 16px 0;
-  width: 100%;
   max-width: calc(100% / 2);
+  height: auto;
 }
 
 .error > span {
