@@ -37,7 +37,7 @@ export default function useAnalytics(onFlush) {
     window.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => window.removeEventListener("visibilitychange", onVisibilityChange);
-  }, [onFlush]);
+  }, [flushAnalytics]);
 
   return [addToQueue];
 }
