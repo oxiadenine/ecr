@@ -1,7 +1,12 @@
+import { env } from "bun";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/app/images/ecr-logo.png";
 import styles from "@/app/not-found.module.css";
+
+export const metadata = {
+  title: env.SITE_NAME
+};
 
 export default function NotFound() {
   return (
