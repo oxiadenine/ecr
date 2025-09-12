@@ -1,5 +1,9 @@
 import { file } from "bun";
 import path from "node:path";
+import { compile, run } from "@mdx-js/mdx";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+import * as runtime from "react/jsx-runtime";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { mdxFromMarkdown } from "mdast-util-mdx";
 import { frontmatterFromMarkdown } from "mdast-util-frontmatter";
@@ -14,26 +18,23 @@ export async function getProjects() {
   return await Promise.all((await walkFiles(directoryPath))
     .filter(parsedPath => parsedPath.ext === ".mdx")
     .map(async parsedPath => {
-      const relativeFilePath = path.join(
-        parsedPath.dir.replace(directoryPath, "/"), 
-        parsedPath.base
-      ).substring(1);
-      
-      const project = await import(`@/projects/${relativeFilePath}`);
+      const bytes = await file(path.join(parsedPath.dir, parsedPath.base)).bytes();
 
-      project.frontmatter.name = parsedPath.name;
+      const project = await run(await compile(bytes, {
+        outputFormat: "function-body",
+        remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter]
+      }), { ...runtime, baseUrl: import.meta.url });
 
-      const projectContent = toHast(fromMarkdown(
-        await file(path.join(parsedPath.dir, parsedPath.base)).bytes(), {
-          extensions: [frontmatter()],
-          mdastExtensions: [mdxFromMarkdown(), frontmatterFromMarkdown()]
-        }
-      ));
+      const projectContent = toHast(fromMarkdown(bytes, {
+        extensions: [frontmatter()],
+        mdastExtensions: [mdxFromMarkdown(), frontmatterFromMarkdown()]
+      }));
 
-      project.frontmatter.images = selectAll("img", projectContent).map(element => ({ 
+      project.key = project.name.replace(" ", "-").toLowerCase();
+      project.images = selectAll("img", projectContent).map(element => ({ 
         src: element.properties.src, alt: element.properties.alt 
       }));
 
-      return { component: project.default, data: project.frontmatter };
+      return project;
     }));
 }

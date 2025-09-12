@@ -1,5 +1,9 @@
 import { file } from "bun";
 import path from "node:path";
+import { compile, run } from "@mdx-js/mdx";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+import * as runtime from "react/jsx-runtime";
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { mdxFromMarkdown } from "mdast-util-mdx";
 import { frontmatterFromMarkdown } from "mdast-util-frontmatter";
@@ -14,21 +18,19 @@ export async function getKnowledge() {
   return await Promise.all((await walkFiles(directoryPath))
     .filter(parsedPath => parsedPath.ext === ".mdx")
     .map(async parsedPath => {
-      const relativeFilePath = path.join(
-        parsedPath.dir.replace(directoryPath, "/"), 
-        parsedPath.base
-      ).substring(1);
-      
-      const knowledge = await import(`@/knowledge/${relativeFilePath}`);
-      
+      const bytes = await file(path.join(parsedPath.dir, parsedPath.base)).bytes();
+
+      const knowledge = await run(await compile(bytes, {
+        outputFormat: "function-body",
+        remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter]
+      }), { ...runtime, baseUrl: import.meta.url });
+
       knowledge.frontmatter.subject = parsedPath.name;
       
-      const knowledgeContent = toHast(fromMarkdown(
-        await file(path.join(parsedPath.dir, parsedPath.base)).bytes(), {
-          extensions: [frontmatter()],
-          mdastExtensions: [mdxFromMarkdown(), frontmatterFromMarkdown()]
-        }
-      ));
+      const knowledgeContent = toHast(fromMarkdown(bytes, {
+        extensions: [frontmatter()],
+        mdastExtensions: [mdxFromMarkdown(), frontmatterFromMarkdown()]
+      }));
 
       knowledge.frontmatter.title = select("h1", knowledgeContent).children[0].value;
       knowledge.frontmatter.summary = select("p", knowledgeContent).children[0].value;

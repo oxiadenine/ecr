@@ -14,8 +14,8 @@ export async function generateMetadata() {
 
   const projects = await getProjects();
 
-  const tags = projects.flatMap(({ data }) => [data.name, ...data.tags.split(",")]);
-  const images = projects.flatMap(({ data }) => data.images.map(image => ({
+  const tags = projects.flatMap(project => [project.name, ...project.tags.split(",")]);
+  const images = projects.flatMap(project => project.images.map(image => ({
     url: `${url}${image.src}`, alt: image.alt
   })));
 
@@ -47,11 +47,11 @@ export default async function Page() {
         <main>
           <div className={styles["page"]}>
             {projects.map((project, index) => {
-              const { component: Project } = project;
+              const { default: Project } = project;
 
               return (
                 <>
-                  <div key={project.data.name}>
+                  <div key={project.key}>
                     <Project />
                   </div>
                   {index < projects.length - 1 && <span key={index} />}
