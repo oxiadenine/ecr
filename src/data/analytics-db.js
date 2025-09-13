@@ -47,7 +47,7 @@ export default class AnalyticsDatabase {
 
       if (lastDays === 1) {
         return await AnalyticsDatabase.client`
-          SELECT ${partial} AS path, strftime('%H', date) AS hour, COUNT(*) AS views 
+          SELECT ${partial} AS path, date AS hour, COUNT(*) AS views 
           FROM pageViews 
           WHERE date > datetime('now', '-1 days', 'subsec') 
           GROUP BY ${partial}, strftime('%H', date) 
@@ -55,7 +55,7 @@ export default class AnalyticsDatabase {
         `;
       } else if (lastDays === 7) {
         return await AnalyticsDatabase.client`
-          SELECT ${partial} AS path, strftime('%u', date) AS weekday, COUNT(*) AS views 
+          SELECT ${partial} AS path, date AS weekday, COUNT(*) AS views 
           FROM pageViews 
           WHERE date > datetime('now', '-7 days', 'subsec') 
           GROUP BY ${partial}, strftime('%u', date) 
@@ -63,7 +63,7 @@ export default class AnalyticsDatabase {
         `;
       } else if (lastDays === 30) {
         return await AnalyticsDatabase.client`
-          SELECT ${partial} AS path, strftime('%d', date) AS day, COUNT(*) AS views 
+          SELECT ${partial} AS path, date AS day, COUNT(*) AS views 
           FROM pageViews 
           WHERE date > datetime('now', '-30 days', 'subsec') 
           GROUP BY ${partial}, strftime('%d', date) 
@@ -71,7 +71,7 @@ export default class AnalyticsDatabase {
         `;
       } else if (lastDays === 365) {
         return await AnalyticsDatabase.client`
-          SELECT ${partial} AS path, strftime('%m', date) AS month, COUNT(*) AS views 
+          SELECT ${partial} AS path, date AS month, COUNT(*) AS views 
           FROM pageViews 
           WHERE date > datetime('now', '-365 days', 'subsec') 
           GROUP BY ${partial}, strftime('%m', date) 

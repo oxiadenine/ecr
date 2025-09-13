@@ -20,30 +20,37 @@ export async function getPageViewsByDate() {
 
     if (dataId === "hour") {
       dataSize = 24;
-      labels = [...Array(dataSize).keys()].map(key =>
-        key > 9 ? `${key}:00` : `0${key}:00`
-      );
+      labels = [...Array(dataSize).keys()].map(key => {
+        const hour = new Intl.DateTimeFormat(
+          new Intl.Locale("es"), { hour: "2-digit", hourCycle: "h24" }
+        ).format(new Date(0, 0, 0, key));
+
+        return hour == 24 ? "00:00" : `${hour}:00`;
+      });
     } else if (dataId === "weekday") {
       dataSize = 7;
       labels = [...Array(dataSize).keys()].map(key => {
-        const weekday = new Intl.DateTimeFormat("es", { weekday: "long" })
-          .format(new Date(0, 0, key + 1));
+        const weekday = new Intl.DateTimeFormat(
+          new Intl.Locale("es"), { weekday: "long" }
+        ).format(new Date(0, 0, key + 1));
     
         return `${weekday.charAt(0).toUpperCase()}${weekday.slice(1)}`;
       });
     } else if (dataId === "day") {
       dataSize = 31;
       labels = [...Array(dataSize).keys()].map(key => {
-        const day = new Intl.DateTimeFormat("es", { day: "2-digit" })
-          .format(new Date(0, 0, key + 1));
+        const day = new Intl.DateTimeFormat(
+          new Intl.Locale("es"), { day: "2-digit" }
+        ).format(new Date(0, 0, key + 1));
     
         return `${day.charAt(0).toUpperCase()}${day.slice(1)}`;
       });
     } else if (dataId === "month") {
       dataSize = 12;
       labels = [...Array(dataSize).keys()].map(key => {
-        const month = new Intl.DateTimeFormat("es", { month: "long" })
-          .format(new Date(0, key));
+        const month = new Intl.DateTimeFormat(
+          new Intl.Locale("es"), { month: "long" }
+        ).format(new Date(0, key));
     
         return `${month.charAt(0).toUpperCase()}${month.slice(1)}`;
       });
@@ -53,10 +60,20 @@ export async function getPageViewsByDate() {
 
     pageViews.forEach(pageView => {
       const { path, views } = pageView;
+      
+      const date = new Date(pageView[dataId]);
 
-      const dataIndex = dataId === "hour"
-        ? parseInt(pageView[dataId])
-        : parseInt(pageView[dataId]) - 1;
+      let dataIndex;
+      
+      if (dataId === "hour") {
+        dataIndex = date.getHours();
+      } else if (dataId === "weekday") {
+        dataIndex = date.getDay() - 1;
+      } else if (dataId === "day") {
+        dataIndex = date.getDate() - 1;
+      } else if (dataId === "month") {
+        dataIndex = date.getMonth();
+      }
   
       const dataset = datasets.get(path);
   
