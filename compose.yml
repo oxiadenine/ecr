@@ -21,7 +21,7 @@ services:
       - ecr-network
   ecr-proxy:
     container_name: ecr-proxy
-    image: traefik:v3.3.4
+    image: traefik:v3.5.2
     ports:
       - 80:80
       - 443:443
