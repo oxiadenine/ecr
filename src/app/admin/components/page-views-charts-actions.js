@@ -68,7 +68,8 @@ export async function getPageViewsByDate() {
       if (dataId === "hour") {
         dataIndex = date.getHours();
       } else if (dataId === "weekday") {
-        dataIndex = date.getDay() - 1;
+        const weekday = date.getDay();
+        dataIndex = weekday === 0 ? dataSize - 1 : weekday - 1;
       } else if (dataId === "day") {
         dataIndex = date.getDate() - 1;
       } else if (dataId === "month") {
