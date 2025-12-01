@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useEffectEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logError from "@/data/log-error-action";
@@ -8,18 +8,14 @@ import logo from "@/app/images/ecr-logo.png";
 import styles from "@/app/error.module.css";
  
 export default function Error({ error }) {
-  useEffect(() => {
-    async function reportError() {
-      await logError({
-        digest: error.digest,
-        name: error.name,
-        message: error.message,
-        stack: error.stack
-      });
-    }
+  const reportError = useEffectEvent(async (error) => await logError({
+    digest: error.digest,
+    name: error.name,
+    message: error.message,
+    stack: error.stack
+  }));
 
-    reportError();
-  }, [error]);
+  useEffect(() => reportError(error), [error]);
 
   return (
     <div className={styles["error"]}>
