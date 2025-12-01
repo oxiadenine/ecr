@@ -7,15 +7,14 @@ import Icon from "@/lib/components/icon";
 import styles from "@/app/components/knowledge-card.module.css";
 
 export default function KnowledgeCard({ data }) {
-  const hasClipboard = navigator.clipboard ?? false;
   const [urlCopied, setUrlCopied] = useState(false);
 
   function onShareIconClick() {
-    if (hasClipboard) {
+    if (navigator.clipboard) {
       navigator.clipboard.writeText(`${location.href}knowledge/${data.subject}`)
         .then(() => setUrlCopied(true));
     }
-  };
+  }
 
   useEffect(() => {
     if (urlCopied) {
@@ -26,11 +25,9 @@ export default function KnowledgeCard({ data }) {
   return (
     <div className={styles["knowledge-card"]}>
       {urlCopied && <span>Copiado</span>}
-      {hasClipboard && (
-        <Button onClick={onShareIconClick}>
-          <Icon type="solid" name="share-nodes" />
-        </Button>
-      )}
+      <Button onClick={onShareIconClick}>
+        <Icon type="solid" name="share-nodes" />
+      </Button>
       <h3>{data.title}</h3>
       <Link href={`/knowledge/${data.subject}`}>
         <p>{data.summary}</p>
