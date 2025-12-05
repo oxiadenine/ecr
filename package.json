@@ -12,16 +12,16 @@
     "@mdx-js/mdx": "^3.1.1",
     "chart.js": "^4.5.1",
     "hast-util-select": "^6.0.4",
-    "next": "^16.0.6",
-    "react": "^19.2.0",
+    "next": "^16.0.7",
+    "react": "^19.2.1",
     "react-chartjs-2": "^5.3.1",
-    "react-dom": "^19.2.0",
+    "react-dom": "^19.2.1",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.2.0"
   },
   "devDependencies": {
     "eslint": "^9.39.1",
-    "eslint-config-next": "^16.0.6"
+    "eslint-config-next": "^16.0.7"
   },
   "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }
