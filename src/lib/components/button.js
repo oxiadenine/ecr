@@ -1,37 +1,29 @@
-import PropTypes from "prop-types";
-
 export default function Button(props) {
-  const { type = "button" } = props;
-
-  PropTypes.checkPropTypes(Button.propTypes, props, "prop", Button.name);
+  const {
+    className,
+    style,
+    type = "button",
+    startIcon,
+    endIcon,
+    children,
+    ...otherProps
+  } = props;
 
   return (
     <button
-      id={props.id}
-      name={props.name}
-      type={type}
-      disabled={props.disabled}
-      onClick={props.onClick}
-      className={props.className}
+      className={className}
       style={{
         display: "flex",
         alignItems: "center",
-        columnGap: "8px"
+        columnGap: "8px",
+        ...style
       }}
+      type={type}
+      {...otherProps}
     >
-      {props.startIcon}
-      {props.children}
-      {props.endIcon}
+      {startIcon}
+      {children}
+      {endIcon}
     </button>
   );
 }
-
-Button.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  type: PropTypes.oneOf(["button", "reset", "submit"]),
-  disabled: PropTypes.bool,
-  onClick: PropTypes.func,
-  startIcon: PropTypes.object,
-  endIcon: PropTypes.object
-};

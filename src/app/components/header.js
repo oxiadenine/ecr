@@ -20,7 +20,7 @@ export default function Header() {
     setSearchTerm(event.target.value);
   }
 
-  function onClearIconClick() {
+  function onSearchInputClearIconClick() {
     setSearchTerm("");
   }
 
@@ -47,12 +47,13 @@ export default function Header() {
         )}
         {pathname === "/" && (
           <Input
+            type="text"
             placeholder="Buscar..."
             onChange={onSearchInputChange}
             value={searchTerm}
             endIcon={searchTerm.length > 0
               ? (
-                <Button onClick={onClearIconClick}>
+                <Button onClick={onSearchInputClearIconClick}>
                   <Icon type="solid" name="xmark" />
                 </Button>
               )
